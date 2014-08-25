@@ -47,11 +47,11 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
     $scope.currentGeneration = _.clone(newGenaration);
     canvas.strokeStyle = '#333';
     canvas.fillStyle = '#2a9eea';
-    canvas.clearRect(0, 0, 512, 512);
+    canvas.clearRect(0, 0, 720, 720);
     _.each($scope.currentGeneration, function(row, _y_) {
         _.each(row, function(item, _x_) {
             canvas.beginPath();
-            canvas.rect(_x_ * 10, _y_ * 10, 10, 10);
+            canvas.rect(_x_ * 8, _y_ * 8, 8, 8);
             if (item) {
                 canvas.fill();
             } else {
@@ -114,12 +114,11 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
   /**
    * Evolution timeout
    **/
-  $scope.itsAlive = function(time) {
-    time = time || 10000;
+  $scope.itsAlive = function() {
     setTimeout(function() {
       $scope.isEvolutionBaby();
       $scope.itsAlive();
-    }, time);
+    }, 1000);
   };
   /**
    * Constructor
@@ -143,8 +142,18 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
 
     $scope.currentGeneration[0][0] = true;
     $scope.currentGeneration[0][1] = true;
+    $scope.currentGeneration[0][3] = true;
+    $scope.currentGeneration[0][3] = true;
 
-    // 0.5 seconds
-    $scope.itsAlive(500);
+    $scope.currentGeneration[0][50] = true;
+    $scope.currentGeneration[0][51] = true;
+    $scope.currentGeneration[1][50] = true;
+
+    $scope.currentGeneration[50][0] = true;
+    $scope.currentGeneration[50][1] = true;
+    $scope.currentGeneration[50][2] = true;
+
+    // start evolution
+    $scope.itsAlive();
   })();
 });
