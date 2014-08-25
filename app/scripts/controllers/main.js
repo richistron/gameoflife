@@ -118,7 +118,7 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
     setTimeout(function() {
       $scope.isEvolutionBaby();
       $scope.itsAlive();
-    }, 1000);
+    }, 2000);
   };
   /**
    * Constructor
@@ -134,24 +134,6 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
     $scope.currentGeneration[32][33] = true;
     $scope.currentGeneration[33][32] = true;
     $scope.currentGeneration[33][33] = true;
-
-    $scope.currentGeneration[5][5] = true;
-    $scope.currentGeneration[5][6] = true;
-    $scope.currentGeneration[6][6] = true;
-    $scope.currentGeneration[6][7] = true;
-
-    $scope.currentGeneration[0][0] = true;
-    $scope.currentGeneration[0][1] = true;
-    $scope.currentGeneration[0][3] = true;
-    $scope.currentGeneration[0][3] = true;
-
-    $scope.currentGeneration[0][50] = true;
-    $scope.currentGeneration[0][51] = true;
-    $scope.currentGeneration[1][50] = true;
-
-    $scope.currentGeneration[50][0] = true;
-    $scope.currentGeneration[50][1] = true;
-    $scope.currentGeneration[50][2] = true;
 
     // start evolution
     $scope.itsAlive();
