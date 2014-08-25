@@ -21,4 +21,15 @@ assuming you have nodejs installed already
 npm install
 npm install -g bower
 bower install
-``` 
+```
+
+# Deploy
+
+http://game-of-life.infraestructocho.com/#/
+
+```
+grunt
+git add dist
+git remote add cloud dokku@infraestructocho.com:game-of-life
+git subtree push --prefix dist cloud master
+```
