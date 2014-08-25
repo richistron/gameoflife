@@ -2,12 +2,12 @@
 
 /**
  * @ngdoc function
- * @name gameOfLifeApp.controller:AboutCtrl
+ * @name gameoflifeApp.controller:AboutCtrl
  * @description
  * # AboutCtrl
- * Controller of the gameOfLifeApp
+ * Controller of the gameoflifeApp
  */
-angular.module('gameOfLifeApp')
+angular.module('gameoflifeApp')
   .controller('AboutCtrl', function ($scope) {
     $scope.awesomeThings = [
       'HTML5 Boilerplate',

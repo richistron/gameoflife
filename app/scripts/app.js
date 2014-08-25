@@ -2,14 +2,14 @@
 
 /**
  * @ngdoc overview
- * @name gameOfLifeApp
+ * @name gameoflifeApp
  * @description
- * # gameOfLifeApp
+ * # gameoflifeApp
  *
  * Main module of the application.
  */
 angular
-  .module('gameOfLifeApp', [
+  .module('gameoflifeApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
