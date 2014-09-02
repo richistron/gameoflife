@@ -30,9 +30,7 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
    * Render new Generation
    **/
   $scope.isEvolutionBaby = function() {
-    var
-    canvas = document.getElementById('gameBoardCanvas').getContext('2d'),
-    newGenaration = $scope.createGeneration();
+    var newGenaration = $scope.createGeneration();
     _.each($scope.currentGeneration, function(itemY, y) {
       _.each($scope.currentGeneration[y], function(itemX, x){
         var neighbours = $scope.getAllNeighbours(y, x);
@@ -45,21 +43,34 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
       });
     });
     $scope.currentGeneration = _.clone(newGenaration);
-    canvas.strokeStyle = '#333';
-    canvas.fillStyle = '#2a9eea';
-    canvas.clearRect(0, 0, 720, 720);
+    $scope.drawBoard();
+  };
+  /**
+   * Draw Board
+   */
+  $scope.drawBoard = function(){
+    var
+    canvas = document.getElementById('gameBoardCanvas') || document.createElement('canvas'),
+    canvasContext = canvas.getContext('2d');
+    canvasContext.strokeStyle = '#333';
+    canvasContext.fillStyle = '#2a9eea';
+    canvasContext.clearRect(0, 0, 720, 720);
     _.each($scope.currentGeneration, function(row, _y_) {
         _.each(row, function(item, _x_) {
-            canvas.beginPath();
-            canvas.rect(_x_ * 8, _y_ * 8, 8, 8);
+            canvasContext.beginPath();
+            canvasContext.rect(_x_ * 8, _y_ * 8, 8, 8);
             if (item) {
-                canvas.fill();
+                canvasContext.fill();
             } else {
-                canvas.stroke();
+                canvasContext.stroke();
             }
         });
     });
   };
+  /**
+   * Return count of existing neighbours
+   * @return {Array} [Can return array or undefined]
+   **/
   $scope.getNeighbour = function(k, j, position){
     k = (k) + (parseInt(position[0]));
     j = (j) + (parseInt(position[1]));
@@ -71,41 +82,31 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
     }
   };
   /**
-   * Check if lives on next generation
+   * Return count of alive neighbours
    **/
   $scope.getAllNeighbours = function(y, x) {
     y = parseInt(y);
     x = parseInt(x);
     var
     aliveNeighbours,
-    neighbours = [];
-    // get neighbours
-    if ($scope.getNeighbour(-1,-1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(-1,-1, arguments));
-    }
-    if ($scope.getNeighbour(-1,0, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(-1,0, arguments));
-    }
-    if ($scope.getNeighbour(-1,1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(-1,1, arguments));
-    }
-    //
-    if ($scope.getNeighbour(0,-1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(0,-1, arguments));
-    }
-    if ($scope.getNeighbour(0,1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(0,1, arguments));
-    }
-    //
-    if ($scope.getNeighbour(1,-1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(1,-1, arguments));
-    }
-    if ($scope.getNeighbour(1,0, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(1,0, arguments));
-    }
-    if ($scope.getNeighbour(1,1, arguments) !== undefined) {
-      neighbours.push($scope.getNeighbour(1,1, arguments));
-    }
+    neighbours = [],
+    addNeighbour = function(n,m,collection, args){
+      if ($scope.getNeighbour(n,m, args) !== undefined) {
+        collection.push($scope.getNeighbour(n,m, args));
+      }
+      return collection;
+    };
+    // top neighbours
+    neighbours = addNeighbour(-1,-1, neighbours, arguments);
+    neighbours = addNeighbour(-1,0, neighbours, arguments);
+    neighbours = addNeighbour(-1,1, neighbours, arguments);
+    // mid neighbours
+    neighbours = addNeighbour(0,-1, neighbours, arguments);
+    neighbours = addNeighbour(0,1, neighbours, arguments);
+    // bot neighbours
+    neighbours = addNeighbour(1,-1, neighbours, arguments);
+    neighbours = addNeighbour(1,0, neighbours, arguments);
+    neighbours = addNeighbour(1,1, neighbours, arguments);
     aliveNeighbours = _.filter(neighbours, function(item) {
       return (item === true);
     });
@@ -114,11 +115,13 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
   /**
    * Evolution timeout
    **/
-  $scope.itsAlive = function() {
+  $scope.itsAlive = function(time) {
+    time = time || 1000;
+    $scope.drawBoard();
     setTimeout(function() {
       $scope.isEvolutionBaby();
-      $scope.itsAlive();
-    }, 2000);
+      $scope.itsAlive(time);
+    }, time);
   };
   /**
    * Constructor
@@ -136,6 +139,6 @@ angular.module('gameoflifeApp').controller('MainCtrl', function ($scope) {
     $scope.currentGeneration[33][33] = true;
 
     // start evolution
-    $scope.itsAlive();
+    $scope.itsAlive(2000);
   })();
 });
